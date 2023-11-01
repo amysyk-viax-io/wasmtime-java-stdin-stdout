@@ -1,0 +1,8 @@
+{
+  "name": "greet-wasm",
+  "version": "0.0.1",
+  "dependencies": {
+    "esbuild": "0.18.17",
+    "javy": "^0.1.2"
+  }
+}
