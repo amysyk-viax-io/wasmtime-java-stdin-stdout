@@ -10,12 +10,15 @@ import io.github.kawamuray.wasmtime.wasi.WasiCtxBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 public class WasmMain {
 
     public static void main(String[] args) throws IOException {
-        final var stdinPath = Paths.get("./wasm/io/stdin.txt");
-        final var stdoutPath = Paths.get("./wasm/io/stdout.txt");
+        final var uniqueId = UUID.randomUUID().toString();
+
+        final var stdinPath = Paths.get(String.format("./wasm/io/stdin.%s.txt", uniqueId));
+        final var stdoutPath = Paths.get(String.format("./wasm/io/stdout.%s.txt", uniqueId));
 
         Files.writeString(stdinPath, "{\"name\": \"John\"}");
 
@@ -39,5 +42,8 @@ public class WasmMain {
         }
 
         System.out.println(Files.readString(stdoutPath));
+
+        Files.deleteIfExists(stdinPath);
+        Files.deleteIfExists(stdoutPath);
     }
 }
