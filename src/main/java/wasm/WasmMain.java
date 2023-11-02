@@ -17,8 +17,10 @@ public class WasmMain {
     public static void main(String[] args) throws IOException {
         final var uniqueId = UUID.randomUUID().toString();
 
-        final var stdinPath = Paths.get(String.format("./wasm/io/stdin.%s.txt", uniqueId));
-        final var stdoutPath = Paths.get(String.format("./wasm/io/stdout.%s.txt", uniqueId));
+        final var modulesPath = WasmMain.class.getClassLoader().getResource("wasm/modules").getPath();
+        final var ioPath = WasmMain.class.getClassLoader().getResource("wasm/io").getPath();
+        final var stdinPath = Paths.get(ioPath, String.format("stdin.%s.txt", uniqueId));
+        final var stdoutPath = Paths.get(ioPath, String.format("stdout.%s.txt", uniqueId));
 
         Files.writeString(stdinPath, "{\"name\": \"John\"}");
 
@@ -32,8 +34,8 @@ public class WasmMain {
         final var linker = new Linker(engine);
 
         WasiCtx.addToLinker(linker);
-        linker.module(store, "javy_quickjs_provider_v1", Module.fromBinary(engine, Files.readAllBytes(Paths.get("./wasm/registry/js_provider.wasm"))));
-        linker.module(store, "", Module.fromBinary(engine, Files.readAllBytes(Paths.get("./wasm/registry/greet.wasm"))));
+        linker.module(store, "javy_quickjs_provider_v1", Module.fromBinary(engine, Files.readAllBytes(Paths.get(modulesPath, "js_provider.wasm"))));
+        linker.module(store, "", Module.fromBinary(engine, Files.readAllBytes(Paths.get(modulesPath, "greet.wasm"))));
 
         final var fn = linker.get(store, "", "_start").get().func();
 
