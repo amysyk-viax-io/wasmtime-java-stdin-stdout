@@ -3,10 +3,9 @@
   "version": "0.0.1",
   "scripts": {
     "build": "./node_modules/.bin/esbuild src/index.js --bundle --outfile=target/out.js",
-    "compile-fat": "javy compile -o target/js_simple_fat.wasm target/out.js",
-    "compile": "javy compile -d -o target/js_simple.wasm target/out.js",
-    "provider": "javy emit-provider -o target/provider.wasm",
-    "wasm": "npm run build && npm run compile && npm run compile-fat && npm run provider"
+    "compile-fat": "javy compile -o target/greet_fat.wasm target/out.js",
+    "compile": "javy compile -d -o target/greet.wasm target/out.js",
+    "provider": "javy emit-provider -o target/js_provider.wasm"
   },
   "dependencies": {
     "esbuild": "0.18.17",
